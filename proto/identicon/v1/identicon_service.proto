@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package identicon.v1;
 
-option go_package = "github.com/kushidam/identicon-service/gen/identicon-service/v1;identicon-service";
+option go_package = "github.com/kushidam/identicon-service/gen/identicon/v1;identiconv1";
 
 // サービス定義
 service IdenticonService {
