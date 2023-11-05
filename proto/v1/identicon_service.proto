@@ -7,17 +7,17 @@ option go_package = "github.com/kushidam/identicon-service/gen/identicon-service
 // サービス定義
 service IdenticonService {
   // テキストデータを受け取り、Identiconを生成し、格納パスを返すメソッド
-  rpc GenerateIdenticon (TextRequest) returns (IdenticonImage);
+  rpc GenerateIdenticon (GenerateIdenticonRequest) returns (GenerateIdenticonResponse);
 }
 
 // リクエストメッセージの定義
-message TextRequest {
+message GenerateIdenticonRequest {
   // テキストデータ
   string text = 1;
 }
 
 // レスポンスメッセージの定義
-message IdenticonImage {
+message GenerateIdenticonResponse {
   // 生成されたIdenticon画像を含むバイナリデータ
   bytes image_data = 1;
 }
