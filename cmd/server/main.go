@@ -1,29 +1,52 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"net/http"
 
 	"connectrpc.com/connect"
 	identiconv1 "github.com/kushidam/identicon-service/gen/identicon/v1"
 	"github.com/kushidam/identicon-service/gen/identicon/v1/identiconv1connect"
+	"github.com/nullrocks/identicon"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
-type GenerateIdenticonServer struct {}
+var (
+	namespace  = "github"
+	blocksSize = 5
+	density    = 3
+)
+
+type GenerateIdenticonServer struct{}
 
 func (s *GenerateIdenticonServer) GenerateIdenticon(
-    ctx context.Context,
-    req *connect.Request[identiconv1.GenerateIdenticonRequest],
+	ctx context.Context,
+	req *connect.Request[identiconv1.GenerateIdenticonRequest],
 ) (*connect.Response[identiconv1.GenerateIdenticonResponse], error) {
+	// Create the identicon generator
+	ig, err := identicon.New(namespace, blocksSize, density)
 
+	if err != nil {
+		return nil, err
+	}
 
-    res := connect.NewResponse(&identiconv1.GenerateIdenticonResponse{
-        ImageData: []byte{0x0a, 0x24, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x63, 0x6f},
-    })
+	ii, err := ig.Draw(req.Msg.Text)
+	if err != nil {
+		return nil, err
+	}
 
-    return res, nil
+	var imgBuffer bytes.Buffer
+	if err := ii.Png(300, &imgBuffer); err != nil {
+		return nil, err
+	}
+
+	imgData := imgBuffer.Bytes()
+
+	return connect.NewResponse(&identiconv1.GenerateIdenticonResponse{
+		ImageData: imgData,
+	}), nil
 }
 
 func main() {

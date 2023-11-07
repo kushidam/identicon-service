@@ -4,6 +4,7 @@ go 1.21.3
 
 require (
 	connectrpc.com/connect v1.12.0
+	github.com/nullrocks/identicon v0.0.0-20180626043057-7875f45b0022
 	golang.org/x/net v0.17.0
 	google.golang.org/protobuf v1.31.0
 )
