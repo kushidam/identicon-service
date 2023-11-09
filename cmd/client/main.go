@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"connectrpc.com/connect"
 	identiconv1 "github.com/kushidam/identicon-service/gen/identicon/v1"
@@ -37,7 +38,18 @@ func main(){
 	if err != nil {
 		log.Fatalf("GenerateIdenticonの呼び出しエラー: %v", err)
 	}
-	
 	log.Printf("生成されたアイデンティコンのバイトデータ: %v", res.Msg.ImageData)
+	
+	// 生成されたアイデンティコンのバイトデータをファイルに書き込む
+	file, err := os.Create("identicon.png")
+	if err != nil {
+		log.Fatalf("ファイルの作成エラー: %v", err)
+	}
+	defer file.Close()
+
+	_, err = file.Write(res.Msg.ImageData)
+	if err != nil {
+		log.Fatalf("ファイルの書き込みエラー: %v", err)
+	}
 
 }
