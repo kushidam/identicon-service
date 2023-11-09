@@ -13,12 +13,11 @@ import (
 	identiconv1connect "github.com/kushidam/identicon-service/gen/identicon/v1/identiconv1connect"
 )
 
-
 var (
-	userText    = flag.String("text", "nullrocks", "use decides the resulting figure")
+	userText = flag.String("text", "nullrocks", "use decides the resulting figure")
 )
 
-func main(){
+func main() {
 	flag.Parse()
 	fmt.Println(userText)
 
@@ -28,18 +27,17 @@ func main(){
 		"http://localhost:50051",
 	)
 
-
 	// GenerateIdenticonメソッドを呼び出す
 	res, err := client.GenerateIdenticon(
-        context.Background(),
-        connect.NewRequest(&identiconv1.GenerateIdenticonRequest{Text: *userText}),
-    )
+		context.Background(),
+		connect.NewRequest(&identiconv1.GenerateIdenticonRequest{Text: *userText}),
+	)
 
 	if err != nil {
 		log.Fatalf("GenerateIdenticonの呼び出しエラー: %v", err)
 	}
 	log.Printf("生成されたアイデンティコンのバイトデータ: %v", res.Msg.ImageData)
-	
+
 	// 生成されたアイデンティコンのバイトデータをファイルに書き込む
 	file, err := os.Create("identicon.png")
 	if err != nil {
