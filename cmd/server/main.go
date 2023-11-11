@@ -6,17 +6,12 @@ import (
 	"net/http"
 
 	"connectrpc.com/connect"
+	"github.com/kushidam/identicon-service/config"
 	identiconv1 "github.com/kushidam/identicon-service/gen/identicon/v1"
 	"github.com/kushidam/identicon-service/gen/identicon/v1/identiconv1connect"
 	"github.com/nullrocks/identicon"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
-)
-
-var (
-	namespace  = "github"
-	blocksSize = 5
-	density    = 3
 )
 
 type GenerateIdenticonServer struct{}
@@ -26,7 +21,7 @@ func (s *GenerateIdenticonServer) GenerateIdenticon(
 	req *connect.Request[identiconv1.GenerateIdenticonRequest],
 ) (*connect.Response[identiconv1.GenerateIdenticonResponse], error) {
 	// Create the identicon generator
-	ig, err := identicon.New(namespace, blocksSize, density)
+	ig, err := identicon.New(config.Config.NAMESPACE, config.Config.BLOCKS_SIZE, config.Config.DENSITY)
 
 	if err != nil {
 		return nil, err
