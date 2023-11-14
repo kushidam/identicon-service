@@ -6,12 +6,26 @@ gRPCプロトコルを使用し、ユーザーから提供された文字列に�
 サーバは、Identiconのバイナリデータを返します。
 クライアント側でバイナリデータを画像に変換（デコード）を行ってください。
 
+# Identicon
+与えられた文字列に応じて、アイコンを生成する。
+
+![icon](assets/identicon_default.png)
+![icon](assets/identicon_argtext.png)
 
 ## 生成用設定ファイルコピー
 コマンドを実行し、`config.ini`を作成する。
 ファイル内に任意の値に設定する。
 ```sh
 cp ./config.ini.example ./config.ini
+```
+```sh
+# config.ini
+# サービスの名前（任意）
+namespace = "サービス名など任意の名前"
+# 画像のサイズ（n*n）
+blocks_size = n
+# 画像の密度
+density = 5
 ```
 
 ##　 サーバの起動
