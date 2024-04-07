@@ -16,10 +16,10 @@ import (
 
 type GenerateIdenticonServer struct{}
 
-func (s *GenerateIdenticonServer) GenerateIdenticon(
+func (s *GenerateIdenticonServer) GenerateBinaryIdenticon(
 	ctx context.Context,
-	req *connect.Request[identiconv1.GenerateIdenticonRequest],
-) (*connect.Response[identiconv1.GenerateIdenticonResponse], error) {
+	req *connect.Request[identiconv1.GenerateBinaryIdenticonRequest],
+) (*connect.Response[identiconv1.GenerateBinaryIdenticonResponse], error) {
 	// Create the identicon generator
 	ig, err := identicon.New(config.Config.NAMESPACE, config.Config.BLOCKS_SIZE, config.Config.DENSITY)
 
@@ -39,7 +39,7 @@ func (s *GenerateIdenticonServer) GenerateIdenticon(
 
 	imgData := imgBuffer.Bytes()
 
-	return connect.NewResponse(&identiconv1.GenerateIdenticonResponse{
+	return connect.NewResponse(&identiconv1.GenerateBinaryIdenticonResponse{
 		ImageData: imgData,
 	}), nil
 }
