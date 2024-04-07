@@ -33,15 +33,15 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// IdenticonServiceGenerateIdenticonProcedure is the fully-qualified name of the IdenticonService's
-	// GenerateIdenticon RPC.
-	IdenticonServiceGenerateIdenticonProcedure = "/identicon.v1.IdenticonService/GenerateIdenticon"
+	// IdenticonServiceGenerateBinaryIdenticonProcedure is the fully-qualified name of the
+	// IdenticonService's GenerateBinaryIdenticon RPC.
+	IdenticonServiceGenerateBinaryIdenticonProcedure = "/identicon.v1.IdenticonService/GenerateBinaryIdenticon"
 )
 
 // IdenticonServiceClient is a client for the identicon.v1.IdenticonService service.
 type IdenticonServiceClient interface {
 	// テキストデータを受け取り、Identiconを生成し、格納パスを返すメソッド
-	GenerateIdenticon(context.Context, *connect.Request[v1.GenerateIdenticonRequest]) (*connect.Response[v1.GenerateIdenticonResponse], error)
+	GenerateBinaryIdenticon(context.Context, *connect.Request[v1.GenerateBinaryIdenticonRequest]) (*connect.Response[v1.GenerateBinaryIdenticonResponse], error)
 }
 
 // NewIdenticonServiceClient constructs a client for the identicon.v1.IdenticonService service. By
@@ -54,9 +54,9 @@ type IdenticonServiceClient interface {
 func NewIdenticonServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) IdenticonServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
 	return &identiconServiceClient{
-		generateIdenticon: connect.NewClient[v1.GenerateIdenticonRequest, v1.GenerateIdenticonResponse](
+		generateBinaryIdenticon: connect.NewClient[v1.GenerateBinaryIdenticonRequest, v1.GenerateBinaryIdenticonResponse](
 			httpClient,
-			baseURL+IdenticonServiceGenerateIdenticonProcedure,
+			baseURL+IdenticonServiceGenerateBinaryIdenticonProcedure,
 			opts...,
 		),
 	}
@@ -64,18 +64,18 @@ func NewIdenticonServiceClient(httpClient connect.HTTPClient, baseURL string, op
 
 // identiconServiceClient implements IdenticonServiceClient.
 type identiconServiceClient struct {
-	generateIdenticon *connect.Client[v1.GenerateIdenticonRequest, v1.GenerateIdenticonResponse]
+	generateBinaryIdenticon *connect.Client[v1.GenerateBinaryIdenticonRequest, v1.GenerateBinaryIdenticonResponse]
 }
 
-// GenerateIdenticon calls identicon.v1.IdenticonService.GenerateIdenticon.
-func (c *identiconServiceClient) GenerateIdenticon(ctx context.Context, req *connect.Request[v1.GenerateIdenticonRequest]) (*connect.Response[v1.GenerateIdenticonResponse], error) {
-	return c.generateIdenticon.CallUnary(ctx, req)
+// GenerateBinaryIdenticon calls identicon.v1.IdenticonService.GenerateBinaryIdenticon.
+func (c *identiconServiceClient) GenerateBinaryIdenticon(ctx context.Context, req *connect.Request[v1.GenerateBinaryIdenticonRequest]) (*connect.Response[v1.GenerateBinaryIdenticonResponse], error) {
+	return c.generateBinaryIdenticon.CallUnary(ctx, req)
 }
 
 // IdenticonServiceHandler is an implementation of the identicon.v1.IdenticonService service.
 type IdenticonServiceHandler interface {
 	// テキストデータを受け取り、Identiconを生成し、格納パスを返すメソッド
-	GenerateIdenticon(context.Context, *connect.Request[v1.GenerateIdenticonRequest]) (*connect.Response[v1.GenerateIdenticonResponse], error)
+	GenerateBinaryIdenticon(context.Context, *connect.Request[v1.GenerateBinaryIdenticonRequest]) (*connect.Response[v1.GenerateBinaryIdenticonResponse], error)
 }
 
 // NewIdenticonServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -84,15 +84,15 @@ type IdenticonServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewIdenticonServiceHandler(svc IdenticonServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	identiconServiceGenerateIdenticonHandler := connect.NewUnaryHandler(
-		IdenticonServiceGenerateIdenticonProcedure,
-		svc.GenerateIdenticon,
+	identiconServiceGenerateBinaryIdenticonHandler := connect.NewUnaryHandler(
+		IdenticonServiceGenerateBinaryIdenticonProcedure,
+		svc.GenerateBinaryIdenticon,
 		opts...,
 	)
 	return "/identicon.v1.IdenticonService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case IdenticonServiceGenerateIdenticonProcedure:
-			identiconServiceGenerateIdenticonHandler.ServeHTTP(w, r)
+		case IdenticonServiceGenerateBinaryIdenticonProcedure:
+			identiconServiceGenerateBinaryIdenticonHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -102,6 +102,6 @@ func NewIdenticonServiceHandler(svc IdenticonServiceHandler, opts ...connect.Han
 // UnimplementedIdenticonServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedIdenticonServiceHandler struct{}
 
-func (UnimplementedIdenticonServiceHandler) GenerateIdenticon(context.Context, *connect.Request[v1.GenerateIdenticonRequest]) (*connect.Response[v1.GenerateIdenticonResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identicon.v1.IdenticonService.GenerateIdenticon is not implemented"))
+func (UnimplementedIdenticonServiceHandler) GenerateBinaryIdenticon(context.Context, *connect.Request[v1.GenerateBinaryIdenticonRequest]) (*connect.Response[v1.GenerateBinaryIdenticonResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("identicon.v1.IdenticonService.GenerateBinaryIdenticon is not implemented"))
 }
