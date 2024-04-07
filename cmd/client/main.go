@@ -27,14 +27,14 @@ func main() {
 		"http://localhost:50051",
 	)
 
-	// GenerateIdenticonメソッドを呼び出す
-	res, err := client.GenerateIdenticon(
+	// GenerateBinaryIdenticonメソッドを呼び出す
+	res, err := client.GenerateBinaryIdenticon(
 		context.Background(),
-		connect.NewRequest(&identiconv1.GenerateIdenticonRequest{Text: *userText}),
+		connect.NewRequest(&identiconv1.GenerateBinaryIdenticonRequest{Text: *userText}),
 	)
 
 	if err != nil {
-		log.Fatalf("GenerateIdenticonの呼び出しエラー: %v", err)
+		log.Fatalf("GenerateBinaryIdenticonの呼び出しエラー: %v", err)
 	}
 	log.Printf("生成されたアイデンティコンのバイトデータ: %v", res.Msg.ImageData)
 
